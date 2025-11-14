@@ -6,22 +6,38 @@
     --sa-accent-50: #eef2ff;
     --sa-new-bg: #ecfdf5;
     --sa-new-text: #059669;
+
+    /* SIDEBAR WIDTHS */
     --sa-sidebar-width: 18rem;
+    /* 288px */
+    --sa-sidebar-width-collapsed: 4.5rem;
+    /* 72px */
+
     --sa-navbar-height: 64px;
 }
+
+/* -------------------------------------------------- */
+/* BASE SIDEBAR */
+/* -------------------------------------------------- */
 
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
+
     width: var(--sa-sidebar-width);
+    /* Default expanded width */
     height: 100vh;
-    z-index: 30;
+
     background-color: var(--sa-bg);
+    z-index: 30;
     overflow-y: auto;
+
+    transition: width 0.25s ease, padding 0.25s ease;
 }
 
+/* hide scrollbars */
 .sidebar::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -35,53 +51,47 @@
     -ms-overflow-style: none;
 }
 
-.logo-token {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
-    color: #fff;
-}
+/* -------------------------------------------------- */
+/* SVG ICON STYLING */
+/* -------------------------------------------------- */
 
-/* ensure svgs inherit color and stroke follows currentColor */
 .sidebar svg {
     stroke: currentColor;
     color: inherit;
-    /* ensures stroke uses current text color */
+    width: 18px;
+    height: auto;
 }
 
-/* -------- leaf states (icon+label buttons) -------- */
+/* -------------------------------------------------- */
+/* LEAF BUTTON STYLES */
+/* -------------------------------------------------- */
+
 .sa-leaf-active {
     background-color: var(--sa-accent);
     color: #fff;
 }
 
-/* keep icon white because svg uses currentColor stroke */
 .sa-leaf-active svg {
     color: #fff;
 }
 
-/* inactive leaf: dark text + subtle hover */
 .sa-leaf-inactive {
     color: var(--sa-text);
     background-color: transparent;
 }
 
 .sa-leaf-inactive:hover {
-    background-color: rgba(15, 23, 42, 0.04);
-    /* similar to slate-50 */
+    background-color: #92ceffef;
 }
 
-/* label spacing tweak (so icons align) */
 .sa-leaf-label {
     line-height: 1;
 }
 
-/* -------- submenu (no-icon items) -------- */
+/* -------------------------------------------------- */
+/* SUBMENU ITEMS */
+/* -------------------------------------------------- */
+
 .sa-sub-active {
     background-color: var(--sa-accent);
     color: #fff;
@@ -89,7 +99,6 @@
 
 .sa-sub-inactive {
     color: #334155;
-    /* slate-700 */
     background-color: transparent;
 }
 
@@ -97,7 +106,10 @@
     background-color: rgba(15, 23, 42, 0.04);
 }
 
-/* NEW badge style */
+/* -------------------------------------------------- */
+/* BADGE */
+/* -------------------------------------------------- */
+
 .sa-new-badge {
     display: inline-block;
     font-size: 11px;
@@ -108,31 +120,28 @@
     color: var(--sa-new-text);
 }
 
-/* small rounded toggle button used next to parent items */
+/* -------------------------------------------------- */
+/* CHEVRON BUTTONS */
+/* -------------------------------------------------- */
+
 .sidebar button[title="Toggle Dashboard submenu"],
 .sidebar button[title="Toggle Ecommerce submenu"] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border-radius: 9999px;
     background-color: #fff;
 }
 
-/* rotate transition for chevrons */
 .transition-transform {
     transition: transform 180ms ease;
 }
 
-.sidebar ::-webkit-scrollbar {
-    width: 10px;
-}
-
-.sidebar ::-webkit-scrollbar-thumb {
-    background: rgba(15, 23, 42, 0.05);
-    border-radius: 9999px;
-}
+/* -------------------------------------------------- */
+/* SMALL SCREEN COMPACT MODE */
+/* -------------------------------------------------- */
 
 @media (max-width: 640px) {
     .sidebar {
@@ -145,4 +154,40 @@
     .sidebar .text-xs {
         display: none;
     }
+}
+
+/* -------------------------------------------------- */
+/* COLLAPSED SIDEBAR */
+/* -------------------------------------------------- */
+
+.sidebar-collapsed {
+    width: var(--sa-sidebar-width-collapsed) !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+/* hide labels */
+.sidebar-collapsed .sa-leaf-label,
+.sidebar-collapsed .text-xs,
+.sidebar-collapsed .sa-new-badge {
+    display: none !important;
+}
+
+/* center icons */
+.sidebar-collapsed .sa-leaf-active,
+.sidebar-collapsed .sa-leaf-inactive {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* submenu indentation removed */
+.sidebar-collapsed .ml-8 {
+    margin-left: 0 !important;
+}
+
+/* center submenu items */
+.sidebar-collapsed .sa-sub-active,
+.sidebar-collapsed .sa-sub-inactive {
+    justify-content: center !important;
 }

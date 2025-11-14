@@ -68,12 +68,13 @@ function sampleNotifications() {
             name: "Lionel Messi",
             text: "Won the FIFA World Cup - FIFA",
             meta: "Project • 1 hr ago",
-            color: "#34D399", 
+            color: "#34D399",
         },
     ];
 }
 
 export default function Navbar({
+    collapsed,
     onToggleSidebar,
     avatarSrc,
     userName = "Messi",
@@ -127,7 +128,8 @@ export default function Navbar({
     }, []);
 
     return (
-        <header className="navbar">
+        <header className="navbar" style={{ left: collapsed ? "80px" : "288px" }}>
+
             {/* centered container with constrained width */}
             <div className="max-w-container">
                 {/* LEFT: hamburger + search */}

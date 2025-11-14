@@ -6,13 +6,13 @@
     --kbd-bg: #f8fafc;
     --sa-sidebar-width: 18rem;
     --sa-navbar-height: 64px;
-    --sa-navbar-maxwidth: 1600px;
+    --sa-navbar-maxwidth: 1900px;
 }
 
 .navbar {
     position: fixed;
     top: 0;
-    left: var(--sa-sidebar-width);
+    left: 0;
     right: 0;
     height: var(--sa-navbar-height);
     z-index: 40;
@@ -448,4 +448,8 @@ button {
         width: auto;
         top: calc(100% + 8px);
     }
+}
+
+.navbar {
+    transition: left 0.3s ease;
 }
