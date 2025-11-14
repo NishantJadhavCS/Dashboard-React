@@ -1,0 +1,148 @@
+:root {
+    --sa-bg: #ffffff;
+    --sa-text: #0f172a;
+    --sa-muted: #94a3b8;
+    --sa-accent: #4f46e5;
+    --sa-accent-50: #eef2ff;
+    --sa-new-bg: #ecfdf5;
+    --sa-new-text: #059669;
+    --sa-sidebar-width: 18rem;
+    --sa-navbar-height: 64px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sa-sidebar-width);
+    height: 100vh;
+    z-index: 30;
+    background-color: var(--sa-bg);
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.sidebar {
+    scrollbar-width: none;
+}
+
+.sidebar {
+    -ms-overflow-style: none;
+}
+
+.logo-token {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    color: #fff;
+}
+
+/* ensure svgs inherit color and stroke follows currentColor */
+.sidebar svg {
+    stroke: currentColor;
+    color: inherit;
+    /* ensures stroke uses current text color */
+}
+
+/* -------- leaf states (icon+label buttons) -------- */
+.sa-leaf-active {
+    background-color: var(--sa-accent);
+    color: #fff;
+}
+
+/* keep icon white because svg uses currentColor stroke */
+.sa-leaf-active svg {
+    color: #fff;
+}
+
+/* inactive leaf: dark text + subtle hover */
+.sa-leaf-inactive {
+    color: var(--sa-text);
+    background-color: transparent;
+}
+
+.sa-leaf-inactive:hover {
+    background-color: rgba(15, 23, 42, 0.04);
+    /* similar to slate-50 */
+}
+
+/* label spacing tweak (so icons align) */
+.sa-leaf-label {
+    line-height: 1;
+}
+
+/* -------- submenu (no-icon items) -------- */
+.sa-sub-active {
+    background-color: var(--sa-accent);
+    color: #fff;
+}
+
+.sa-sub-inactive {
+    color: #334155;
+    /* slate-700 */
+    background-color: transparent;
+}
+
+.sa-sub-inactive:hover {
+    background-color: rgba(15, 23, 42, 0.04);
+}
+
+/* NEW badge style */
+.sa-new-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background-color: var(--sa-new-bg);
+    color: var(--sa-new-text);
+}
+
+/* small rounded toggle button used next to parent items */
+.sidebar button[title="Toggle Dashboard submenu"],
+.sidebar button[title="Toggle Ecommerce submenu"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9999px;
+    background-color: #fff;
+}
+
+/* rotate transition for chevrons */
+.transition-transform {
+    transition: transform 180ms ease;
+}
+
+.sidebar ::-webkit-scrollbar {
+    width: 10px;
+}
+
+.sidebar ::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.05);
+    border-radius: 9999px;
+}
+
+@media (max-width: 640px) {
+    .sidebar {
+        width: 64px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .sidebar .text-lg,
+    .sidebar .text-xs {
+        display: none;
+    }
+}
