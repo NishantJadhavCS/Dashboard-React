@@ -81,15 +81,15 @@ export default function Sidebar({ collapsed, onItemClick }) {
             className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`}
         >
             {/* Logo */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-8 flex justify-center p-4">
                 {!isCollapsed ? (
-                    <img src={FullLogo} alt="Full Logo" className="h-10 w-auto transition-all mt-3" />
+                    <img src={FullLogo} alt="Full Logo" className="h-10 w-auto transition-all" />
                 ) : (
-                    <img src={ShortLogo} alt="Short Logo" className="h-10 w-10 transition-all mt-3" />
+                    <img src={ShortLogo} alt="Short Logo" className="h-10 w-10 transition-all" />
                 )}
             </div>
 
-            <nav className="text-slate-700">
+            <nav className="text-slate-700 p-2">
 
                 {!isCollapsed && <div className="text-xs font-semibold uppercase text-slate-400 mb-3"></div>}
 
@@ -107,7 +107,7 @@ export default function Sidebar({ collapsed, onItemClick }) {
                         {!isCollapsed && (
                             <button
                                 type="button"
-                                className="ml-2 p-1 mr-2 rounded-full text-slate-400 hover:bg-slate-50"
+                                className="ml-2 p-1 rounded-full text-slate-400 hover:bg-slate-50"
                                 onClick={() => toggle("dashboard")}
                             >
                                 <div className={`${open.dashboard ? "rotate-180" : ""} transition-transform`}>
