@@ -117,3 +117,335 @@ button {
         display: none;
     }
 }
+
+.super-rounded {
+    border-radius: 400px !important;
+    border: 1px solid #d1d5db;
+    /* Tailwind’s slate-300 */
+}
+
+/* Notification menu styles */
+.notif-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 340px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.12);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 60;
+    animation: pop 180ms cubic-bezier(.2, .9, .3, 1);
+}
+
+/* tiny pop animation */
+@keyframes pop {
+    from {
+        transform: translateY(-6px) scale(.995);
+        opacity: 0
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1
+    }
+}
+
+.notif-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+    font-weight: 700;
+    color: #0f172a;
+    background: transparent;
+}
+
+.notif-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    padding: 6px;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.notif-list {
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* scrollbar (WebKit) */
+.notif-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notif-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notif-list::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.06);
+    border-radius: 999px;
+}
+
+/* individual notification row */
+.notif-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+/* left part: avatar + content */
+.notif-left {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    flex: 1 1 auto;
+}
+
+/* avatar circle */
+.notif-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(2, 6, 23, 0.04);
+}
+
+/* content */
+.notif-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.notif-title {
+    font-size: 13px;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.notif-name {
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.notif-text {
+    color: #334155;
+    font-weight: 500;
+}
+
+/* meta text */
+.notif-meta {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* small colored dot at the right of each item */
+.notif-dot-inline {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    margin-left: 10px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+/* footer */
+.notif-footer {
+    border-top: 1px solid rgba(15, 23, 42, 0.04);
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.view-all-btn {
+    width: calc(100% - 20px);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: #fff;
+    font-weight: 700;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+/* small responsive tweak so menu doesn't overflow on tiny screens */
+@media (max-width: 420px) {
+    .notif-menu {
+        right: 6px;
+        left: 6px;
+        width: auto;
+        top: calc(100% + 8px);
+    }
+}
+
+/* Profile dropdown menu */
+.profile-wrap {
+    position: relative;
+}
+
+.profile-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 260px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.12);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    z-index: 60;
+    animation: pop 160ms cubic-bezier(.2, .9, .3, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* header with avatar + info */
+.profile-menu-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px;
+    background: transparent;
+}
+
+.profile-menu-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #0f172a;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(2, 6, 23, 0.04);
+}
+
+.profile-menu-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-menu-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.profile-menu-name {
+    font-weight: 800;
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.profile-menu-email {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* menu list */
+.profile-menu-list {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid rgba(15, 23, 42, 0.03);
+    cursor: pointer;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+}
+
+.profile-menu-item:hover {
+    background: #f8fafc;
+}
+
+/* small icon cell */
+.menu-item-icon {
+    width: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #475569;
+}
+
+/* separator */
+.profile-menu-sep {
+    height: 1px;
+    background: rgba(15, 23, 42, 0.04);
+    margin: 8px 0;
+}
+
+/* bottom area */
+.profile-menu-bottom {
+    padding: 10px;
+}
+
+.profile-menu-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profile-menu-logout:hover {
+    background: #fff7ed;
+}
+
+/* small responsive tweak */
+@media (max-width: 420px) {
+    .profile-menu {
+        right: 6px;
+        left: 6px;
+        width: auto;
+        top: calc(100% + 8px);
+    }
+}

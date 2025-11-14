@@ -1,18 +1,12 @@
 // src/components/Navbar.jsx
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./css/Navbar.css"; // component CSS (src/css/Navbar.css)
-
-/**
- * Navbar
- * - left: hamburger + search
- * - right: theme toggle, notifications, profile
- *
- * Props:
- *  - onToggleSidebar?: () => void
- *  - avatarSrc?: string
- *  - userName?: string
- *  - onSearch?: (q:string) => void
- */
+import {
+    HiOutlineUser,
+    HiOutlineCog6Tooth,
+    HiOutlineInformationCircle,
+    HiOutlineArrowRightOnRectangle
+} from "react-icons/hi2";
 
 function IconHamburger() {
     return (
@@ -45,10 +39,44 @@ function IconBell() {
     );
 }
 
+/* small helper to generate example notifications */
+function sampleNotifications() {
+    return [
+        {
+            id: 1,
+            name: "Lionel Messi",
+            text: "Won his 8th Ballon D'or - France Football",
+            meta: "Paris • 5 min ago",
+            color: "#34D399", // green dot
+        },
+        {
+            id: 2,
+            name: "Cristiano Ronaldo",
+            text: "Joined Manchester United - ESPN",
+            meta: "Premeir League • 8 min ago",
+            color: "#34D399",
+        },
+        {
+            id: 3,
+            name: "Neymar Junior",
+            text: "Injured at half time - Injury FC",
+            meta: "Project • 15 min ago",
+            color: "#F87171",
+        },
+        {
+            id: 4,
+            name: "Lionel Messi",
+            text: "Won the FIFA World Cup - FIFA",
+            meta: "Project • 1 hr ago",
+            color: "#34D399", 
+        },
+    ];
+}
+
 export default function Navbar({
     onToggleSidebar,
     avatarSrc,
-    userName = "Musharof",
+    userName = "Messi",
     onSearch,
 }) {
     const handleSubmit = (e) => {
@@ -57,6 +85,46 @@ export default function Navbar({
         if (typeof onSearch === "function") onSearch(q);
         else console.log("search:", q);
     };
+
+    // notification menu state + refs for click-outside handling
+    const [notifOpen, setNotifOpen] = useState(false);
+    const notifRef = useRef(null);
+    const notifBtnRef = useRef(null);
+    const [notifications] = useState(sampleNotifications());
+
+    // profile menu state + refs
+    const [profileOpen, setProfileOpen] = useState(false);
+    const profileRef = useRef(null);
+    const profileBtnRef = useRef(null);
+
+    useEffect(() => {
+        function onKey(e) {
+            if (e.key === "Escape") {
+                setNotifOpen(false);
+                setProfileOpen(false);
+            }
+        }
+        function onDocClick(e) {
+            // close notif menu if clicking outside both menu and its button
+            if (notifRef.current && notifBtnRef.current) {
+                if (!notifRef.current.contains(e.target) && !notifBtnRef.current.contains(e.target)) {
+                    setNotifOpen(false);
+                }
+            }
+            // close profile menu if clicking outside both menu and its button
+            if (profileRef.current && profileBtnRef.current) {
+                if (!profileRef.current.contains(e.target) && !profileBtnRef.current.contains(e.target)) {
+                    setProfileOpen(false);
+                }
+            }
+        }
+        document.addEventListener("click", onDocClick);
+        document.addEventListener("keydown", onKey);
+        return () => {
+            document.removeEventListener("click", onDocClick);
+            document.removeEventListener("keydown", onKey);
+        };
+    }, []);
 
     return (
         <header className="navbar">
@@ -101,46 +169,173 @@ export default function Navbar({
                     <button
                         type="button"
                         aria-label="Toggle theme"
-                        className="p-2 rounded-lg hover:bg-slate-50 text-slate-600"
+                        className="p-2 super-rounded hover:bg-slate-50 text-slate-600"
                         title="Toggle theme"
                     >
                         <IconMoon />
                     </button>
 
-                    <div className="relative">
+                    {/* Notifications: button + menu */}
+                    <div className="relative" ref={notifRef}>
                         <button
+                            ref={notifBtnRef}
                             type="button"
                             aria-label="Notifications"
-                            className="p-2 rounded-lg hover:bg-slate-50 text-slate-600"
+                            aria-expanded={notifOpen}
+                            onClick={() => {
+                                // toggle notif and ensure profile closes
+                                setNotifOpen((s) => !s);
+                                setProfileOpen(false);
+                            }}
+                            className="p-2 super-rounded hover:bg-slate-50 text-slate-600"
                         >
                             <IconBell />
                         </button>
                         <span className="notif-dot" aria-hidden></span>
-                    </div>
 
-                    <div className="profile flex items-center gap-3 pl-2 border-l border-slate-100">
-                        {avatarSrc ? (
-                            <img src={avatarSrc} alt={`${userName} avatar`} className="h-9 w-9 rounded-full object-cover" />
-                        ) : (
-                            <div className="h-9 w-9 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold text-slate-700">
-                                {userName?.split(" ")?.map(s => s[0]).slice(0, 2).join("")}
+                        {/* Notification menu */}
+                        {notifOpen && (
+                            <div
+                                className="notif-menu"
+                                role="dialog"
+                                aria-label="Notifications"
+                                aria-modal="false"
+                                onClick={(e) => e.stopPropagation()}
+                                ref={notifRef}
+                            >
+                                <div className="notif-header">
+                                    <strong>Notification</strong>
+                                    <button
+                                        type="button"
+                                        className="notif-close"
+                                        aria-label="Close notifications"
+                                        onClick={() => setNotifOpen(false)}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+
+                                <div className="notif-list">
+                                    {notifications.map((n) => (
+                                        <div className="notif-item" key={n.id}>
+                                            <div className="notif-left">
+                                                <div className="notif-avatar" aria-hidden>
+                                                    <span>{n.name.split(" ").map(s => s[0]).slice(0, 2).join("")}</span>
+                                                </div>
+                                                <div className="notif-content">
+                                                    <div className="notif-title">
+                                                        <span className="notif-name">{n.name}</span>
+                                                        <span className="notif-text"> {n.text}</span>
+                                                    </div>
+                                                    <div className="notif-meta">{n.meta}</div>
+                                                </div>
+                                            </div>
+
+                                            <div className="notif-dot-inline" style={{ background: n.color }} aria-hidden />
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="notif-footer">
+                                    <button type="button" className="view-all-btn">View All Notifications</button>
+                                </div>
                             </div>
                         )}
+                    </div>
 
-                        <div className="hidden sm:flex flex-col leading-tight">
-                            <span className="text-sm font-medium text-slate-800">{userName}</span>
-                            <span className="text-xs text-slate-400">Admin</span>
+                    {/* Profile: avatar + name + dropdown */}
+                    <div className="profile-wrap" ref={profileRef}>
+                        <div className="profile flex items-center gap-3 pl-2 border-l border-slate-100">
+                            {avatarSrc ? (
+                                <img
+                                    src={avatarSrc}
+                                    alt={`${userName} avatar`}
+                                    className="h-9 w-9 rounded-full object-cover cursor-pointer"
+                                    ref={profileBtnRef}
+                                    onClick={() => {
+                                        setProfileOpen((s) => !s);
+                                        setNotifOpen(false);
+                                    }}
+                                />
+                            ) : (
+                                <div
+                                    ref={profileBtnRef}
+                                    onClick={() => {
+                                        setProfileOpen((s) => !s);
+                                        setNotifOpen(false);
+                                    }}
+                                    className="h-9 w-9 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold text-slate-700 cursor-pointer"
+                                >
+                                    {userName?.split(" ")?.map(s => s[0]).slice(0, 2).join("")}
+                                </div>
+                            )}
+
+                            <div className="hidden sm:flex flex-col leading-tight cursor-pointer" onClick={() => {
+                                setProfileOpen((s) => !s);
+                                setNotifOpen(false);
+                            }}>
+                                <span className="text-sm font-medium text-slate-800">{userName}</span>
+                            </div>
+
+                            <button
+                                type="button"
+                                aria-label="Open profile menu"
+                                className="p-1 rounded-md text-slate-400 hover:text-slate-600"
+                                onClick={() => {
+                                    setProfileOpen((s) => !s);
+                                    setNotifOpen(false);
+                                }}
+                                ref={profileBtnRef}
+                            >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                                    <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
                         </div>
 
-                        <button
-                            type="button"
-                            aria-label="Open profile menu"
-                            className="p-1 rounded-md text-slate-400 hover:text-slate-600"
-                        >
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
+                        {profileOpen && (
+                            <div className="profile-menu" role="menu" aria-label="User menu" onClick={(e) => e.stopPropagation()}>
+                                <div className="profile-menu-head">
+                                    <div className="profile-menu-avatar">
+                                        {avatarSrc ? (
+                                            <img src={avatarSrc} alt={`${userName} avatar`} />
+                                        ) : (
+                                            <span>{userName?.split(" ").map(s => s[0]).slice(0, 2).join("")}</span>
+                                        )}
+                                    </div>
+                                    <div className="profile-menu-info">
+                                        <div className="profile-menu-name">{userName}</div>
+                                        <div className="profile-menu-email">messi@fifa.com</div>
+                                    </div>
+                                </div>
+
+                                <div className="profile-menu-list">
+                                    <button type="button" className="profile-menu-item" role="menuitem">
+                                        <HiOutlineUser className="menu-item-icon react-icon" />
+                                        <span>Edit profile</span>
+                                    </button>
+
+                                    <button type="button" className="profile-menu-item" role="menuitem">
+                                        <HiOutlineCog6Tooth className="menu-item-icon react-icon" />
+                                        <span>Account settings</span>
+                                    </button>
+
+                                    <button type="button" className="profile-menu-item" role="menuitem">
+                                        <HiOutlineInformationCircle className="menu-item-icon react-icon" />
+                                        <span>Support</span>
+                                    </button>
+                                </div>
+
+                                <div className="profile-menu-sep" />
+
+                                <div className="profile-menu-bottom">
+                                    <button type="button" className="profile-menu-logout" role="menuitem">
+                                        <HiOutlineArrowRightOnRectangle className="menu-item-icon react-icon" />
+                                        <span className="text-black">Sign out</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
