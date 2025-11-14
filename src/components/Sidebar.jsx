@@ -1,32 +1,26 @@
 // src/components/Sidebar.jsx
 import React, { useState } from "react";
-import "./css/Sidebar.css"; // <-- component-specific CSS (put file at src/css/Sidebar.css)
+import "./css/Sidebar.css";
 import LogoIcon from "../assets/tailadmin.svg";
 
-const IconLogo = () => (
-    <img
-        src={LogoIcon}
-        alt="TailAdmin Logo"
-        className="h-10 w-auto"
-    />
-);
+import {
+    HiOutlineHome,
+    HiOutlineShoppingBag,
+    HiOutlineCpuChip,
+    HiOutlineCalendar,
+    HiOutlineUser,
+    HiOutlineClipboardDocumentCheck,
+    HiOutlineDocumentText,
+    HiOutlineTableCells,
+    HiOutlineDocumentDuplicate,
+    HiOutlineChartPie,
+    HiOutlinePuzzlePiece,
+    HiOutlineChatBubbleLeftRight,
+    HiOutlineTicket,
+    HiOutlineEnvelope,
+} from "react-icons/hi2";
 
-
-const IconGrid = ({ className = "w-5 h-5" }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-        <rect x="3" y="3" width="8" height="8" rx="1.5" />
-        <rect x="13" y="3" width="8" height="8" rx="1.5" />
-        <rect x="3" y="13" width="8" height="8" rx="1.5" />
-        <rect x="13" y="13" width="8" height="8" rx="1.5" />
-    </svg>
-);
-
-const IconBox = ({ className = "w-5 h-5" }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-        <path d="M21 16V8a2 2 0 0 0-1-1.73L13 2.27a2 2 0 0 0-2 0L4 6.27A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4.73a2 2 0 0 0 2 0l7-4.73A2 2 0 0 0 21 16z" />
-    </svg>
-);
-
+/* Chevron (kept as inline SVG for simple rotation) */
 const IconChevron = ({ className = "w-4 h-4" }) => (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
         <path d="M6 9l6 6 6-6" />
@@ -37,6 +31,9 @@ const IconChevron = ({ className = "w-4 h-4" }) => (
 function NewBadge() {
     return <span className="sa-new-badge">NEW</span>;
 }
+
+/* logo */
+const IconLogo = () => <img src={LogoIcon} alt="TailAdmin Logo" className="h-10 w-auto" />;
 
 /* Leaf with icon */
 function Leaf({ id, label, icon, active, onClick }) {
@@ -100,7 +97,7 @@ export default function Sidebar({ onItemClick }) {
                             <Leaf
                                 id="dashboard"
                                 label="Dashboard"
-                                icon={<IconGrid />}
+                                icon={<HiOutlineHome className="w-5 h-5" />}
                                 active={activeId === "dashboard"}
                                 onClick={handleClick}
                             />
@@ -138,7 +135,7 @@ export default function Sidebar({ onItemClick }) {
                             <Leaf
                                 id="ecommerce"
                                 label="Ecommerce"
-                                icon={<IconBox />}
+                                icon={<HiOutlineShoppingBag className="w-5 h-5" />}
                                 active={activeId === "ecommerce" || activeId?.startsWith("ecommerce.")}
                                 onClick={() => handleClick("ecommerce")}
                             />
@@ -167,28 +164,28 @@ export default function Sidebar({ onItemClick }) {
                     {/* Other top-level leaves */}
                     <div className="mt-6">
                         <div className="flex items-center">
-                            <Leaf id="ai" label="AI Assistant" icon={<IconBox />} active={activeId === "ai"} onClick={handleClick} />
+                            <Leaf id="ai" label="AI Assistant" icon={<HiOutlineCpuChip className="w-5 h-5" />} active={activeId === "ai"} onClick={handleClick} />
                             <NewBadge />
                         </div>
                     </div>
 
                     <div className="mt-2">
-                        <Leaf id="calendar" label="Calendar" icon={<IconBox />} active={activeId === "calendar"} onClick={handleClick} />
+                        <Leaf id="calendar" label="Calendar" icon={<HiOutlineCalendar className="w-5 h-5" />} active={activeId === "calendar"} onClick={handleClick} />
                     </div>
                     <div className="mt-2">
-                        <Leaf id="user" label="User Profile" icon={<IconBox />} active={activeId === "user"} onClick={handleClick} />
+                        <Leaf id="user" label="User Profile" icon={<HiOutlineUser className="w-5 h-5" />} active={activeId === "user"} onClick={handleClick} />
                     </div>
                     <div className="mt-2">
-                        <Leaf id="task" label="Task" icon={<IconBox />} active={activeId === "task"} onClick={handleClick} />
+                        <Leaf id="task" label="Task" icon={<HiOutlineClipboardDocumentCheck className="w-5 h-5" />} active={activeId === "task"} onClick={handleClick} />
                     </div>
                     <div className="mt-2">
-                        <Leaf id="forms" label="Forms" icon={<IconBox />} active={activeId === "forms"} onClick={handleClick} />
+                        <Leaf id="forms" label="Forms" icon={<HiOutlineDocumentText className="w-5 h-5" />} active={activeId === "forms"} onClick={handleClick} />
                     </div>
                     <div className="mt-2">
-                        <Leaf id="tables" label="Tables" icon={<IconBox />} active={activeId === "tables"} onClick={handleClick} />
+                        <Leaf id="tables" label="Tables" icon={<HiOutlineTableCells className="w-5 h-5" />} active={activeId === "tables"} onClick={handleClick} />
                     </div>
                     <div className="mt-2">
-                        <Leaf id="pages" label="Pages" icon={<IconBox />} active={activeId === "pages"} onClick={handleClick} />
+                        <Leaf id="pages" label="Pages" icon={<HiOutlineDocumentDuplicate className="w-5 h-5" />} active={activeId === "pages"} onClick={handleClick} />
                     </div>
                 </div>
 
@@ -196,9 +193,9 @@ export default function Sidebar({ onItemClick }) {
                 <div className="mb-6">
                     <div className="text-xs font-semibold uppercase text-slate-400 mb-3">Support</div>
                     <div className="space-y-2">
-                        <Leaf id="chat" label="Chat" icon={<IconBox />} active={activeId === "chat"} onClick={handleClick} />
-                        <Leaf id="support-ticket" label="Support Ticket" icon={<IconBox />} active={activeId === "support-ticket"} onClick={handleClick} />
-                        <Leaf id="email" label="Email" icon={<IconBox />} active={activeId === "email"} onClick={handleClick} />
+                        <Leaf id="chat" label="Chat" icon={<HiOutlineChatBubbleLeftRight className="w-5 h-5" />} active={activeId === "chat"} onClick={handleClick} />
+                        <Leaf id="support-ticket" label="Support Ticket" icon={<HiOutlineTicket className="w-5 h-5" />} active={activeId === "support-ticket"} onClick={handleClick} />
+                        <Leaf id="email" label="Email" icon={<HiOutlineEnvelope className="w-5 h-5" />} active={activeId === "email"} onClick={handleClick} />
                     </div>
                 </div>
 
@@ -206,8 +203,8 @@ export default function Sidebar({ onItemClick }) {
                 <div>
                     <div className="text-xs font-semibold uppercase text-slate-400 mb-3">Others</div>
                     <div className="space-y-2">
-                        <Leaf id="charts" label="Charts" icon={<IconBox />} active={activeId === "charts"} onClick={handleClick} />
-                        <Leaf id="ui-elements" label="UI Elements" icon={<IconBox />} active={activeId === "ui-elements"} onClick={handleClick} />
+                        <Leaf id="charts" label="Charts" icon={<HiOutlineChartPie className="w-5 h-5" />} active={activeId === "charts"} onClick={handleClick} />
+                        <Leaf id="ui-elements" label="UI Elements" icon={<HiOutlinePuzzlePiece className="w-5 h-5" />} active={activeId === "ui-elements"} onClick={handleClick} />
                     </div>
                 </div>
             </nav>
