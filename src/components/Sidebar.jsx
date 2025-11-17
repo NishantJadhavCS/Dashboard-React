@@ -1,5 +1,6 @@
 // src/components/Sidebar.jsx
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./css/Sidebar.css";
 
 import FullLogo from "../assets/tailadmin.svg";
@@ -32,13 +33,34 @@ function NewBadge() {
     return <span className="sa-new-badge">NEW</span>;
 }
 
-function Leaf({ id, label, icon, active, onClick }) {
+/**
+ * Leaf supports two modes:
+ * - link mode: pass `to` prop -> uses NavLink for navigation
+ * - button mode: no `to` -> uses a normal button and calls onClick(id)
+ */
+function Leaf({ id, label, icon, active, onClick, to }) {
+    const baseClasses = "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium w-full text-left";
+    const activeClass = "sa-leaf-active";
+    const inactiveClass = "sa-leaf-inactive";
+
+    if (to) {
+        return (
+            <NavLink
+                to={to}
+                className={({ isActive }) => `${baseClasses} ${isActive ? activeClass : inactiveClass}`}
+                onClick={() => onClick?.(id)}
+            >
+                {icon}
+                <span className="sa-leaf-label">{label}</span>
+            </NavLink>
+        );
+    }
+
     return (
         <button
             type="button"
-            onClick={() => onClick(id)}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium w-full text-left ${active ? "sa-leaf-active" : "sa-leaf-inactive"
-                }`}
+            onClick={() => onClick?.(id)}
+            className={`${baseClasses} ${active ? activeClass : inactiveClass}`}
         >
             {icon}
             <span className="sa-leaf-label">{label}</span>
@@ -46,13 +68,25 @@ function Leaf({ id, label, icon, active, onClick }) {
     );
 }
 
-function SubItem({ id, label, active, onClick }) {
+/** SubItem also supports NavLink via `to` prop. */
+function SubItem({ id, label, active, onClick, to }) {
+    const base = "px-3 py-2 rounded-lg text-sm w-full text-left block";
+    if (to) {
+        return (
+            <NavLink
+                to={to}
+                className={({ isActive }) => `${base} ${isActive ? "sa-sub-active" : "sa-sub-inactive"}`}
+                onClick={() => onClick?.(id)}
+            >
+                {label}
+            </NavLink>
+        );
+    }
     return (
         <button
             type="button"
-            onClick={() => onClick(id)}
-            className={`px-3 py-2 rounded-lg text-sm w-full text-left ${active ? "sa-sub-active" : "sa-sub-inactive"
-                }`}
+            onClick={() => onClick?.(id)}
+            className={`${base} ${active ? "sa-sub-active" : "sa-sub-inactive"}`}
         >
             {label}
         </button>
@@ -62,7 +96,6 @@ function SubItem({ id, label, active, onClick }) {
 export default function Sidebar({ collapsed, onItemClick }) {
     const [open, setOpen] = useState({ dashboard: true, ecommerce: false });
     const [activeId, setActiveId] = useState("dashboard");
-
 
     // final collapse state (hover overrides collapsed)
     const isCollapsed = collapsed;
@@ -77,10 +110,7 @@ export default function Sidebar({ collapsed, onItemClick }) {
     }
 
     return (
-        <aside
-            className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`}
-        >
-            {/* Logo */}
+        <aside className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`}>
             <div className="mb-8 flex justify-center p-4">
                 {!isCollapsed ? (
                     <img src={FullLogo} alt="Full Logo" className="h-10 w-auto transition-all" />
@@ -90,18 +120,19 @@ export default function Sidebar({ collapsed, onItemClick }) {
             </div>
 
             <nav className="text-slate-700 p-2">
-
                 {!isCollapsed && <div className="text-xs font-semibold uppercase text-slate-400 mb-3"></div>}
 
                 {/* DASHBOARD */}
                 <div>
                     <div className="flex items-center justify-between">
+                        {/* Dashboard now navigates to "/" */}
                         <Leaf
                             id="dashboard"
                             label="Dashboard"
                             icon={<HiOutlineHome className="w-5 h-5" />}
                             active={activeId === "dashboard"}
                             onClick={handleClick}
+                            to="/"
                         />
 
                         {!isCollapsed && (
@@ -158,8 +189,22 @@ export default function Sidebar({ collapsed, onItemClick }) {
 
                     {!isCollapsed && open.ecommerce && (
                         <div className="mt-2 ml-8 flex flex-col gap-1">
-                            <SubItem id="ecommerce.products" label="Products" active={activeId === "ecommerce.products"} onClick={handleClick} />
-                            <SubItem id="ecommerce.create" label="Create Product" active={activeId === "ecommerce.create"} onClick={handleClick} />
+                            {/* Products -> /products */}
+                            <SubItem
+                                id="ecommerce.products"
+                                label="Products"
+                                active={activeId === "ecommerce.products"}
+                                onClick={handleClick}
+                                to="/products"
+                            />
+                            {/* Create Product -> /products/new */}
+                            <SubItem
+                                id="ecommerce.create"
+                                label="Create Product"
+                                active={activeId === "ecommerce.create"}
+                                onClick={handleClick}
+                                to="/products/new"
+                            />
                         </div>
                     )}
                 </div>
@@ -171,7 +216,8 @@ export default function Sidebar({ collapsed, onItemClick }) {
                 </div>
 
                 <div className="mt-2">
-                    <Leaf id="calendar" label="Calendar" icon={<HiOutlineCalendar className="w-5 h-5" />} active={activeId === "calendar"} onClick={handleClick} />
+                    {/* Calendar now navigates to /calendar */}
+                    <Leaf id="calendar" label="Calendar" icon={<HiOutlineCalendar className="w-5 h-5" />} active={activeId === "calendar"} onClick={handleClick} to="/calendar" />
                 </div>
 
                 <div className="mt-2">

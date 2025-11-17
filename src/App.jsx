@@ -1,37 +1,28 @@
 // src/App.jsx
-import React, { useState } from "react";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import RecentOrder from "./components/RecentOrders";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./layout/Layout";
+
+import Dashboard from "./pages/Dashboard";
+import Products from "./pages/Products";
+import NewProduct from "./pages/NewProduct";
+import Calendar from "./pages/Calendar";
 
 export default function App() {
-  const EXPANDED_WIDTH = 288;
-  const COLLAPSED_WIDTH = 80;
-
-  const [collapsed, setCollapsed] = useState(false);
-
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* index route -> rendered at "/" */}
+        <Route index element={<Dashboard />} />
 
-      {/* SIDEBAR */}
-      <Sidebar collapsed={collapsed} />
+        {/* nested routes -> path becomes "/products" etc */}
+        <Route path="products" element={<Products />} />
+        <Route path="products/new" element={<NewProduct />} />
+        <Route path="calendar" element={<Calendar />} />
 
-      {/* MAIN AREA */}
-      <div
-        className="flex flex-col w-full transition-all duration-300"
-        style={{
-          marginLeft: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH,
-        }}
-      >
-        <Navbar
-          collapsed={collapsed}
-          onToggleSidebar={() => setCollapsed((s) => !s)}
-        />
-
-        <div className="pt-20 px-6 transition-all duration-300">
-          <RecentOrder />
-        </div>
-      </div>
-    </div>
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   );
 }
